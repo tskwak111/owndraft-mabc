@@ -31,6 +31,8 @@ LIVE_MODEL_TEST=OPTIONAL
 
 - 설계서 §13.3의 Pattern Scanner 출력 예시(`action: ask_or_rewrite`)와 계획의 `FindingAction`(keep/rewrite/delete/ask) 표현 차이 → 계획의 Literal 타입을 우선한다(우선순위 2).
 - 나머지 핵심 계약(확신도 경계, repair 1회, parse retry 1회, 길이 제한)은 문서 간 모순 없음.
+- **(Task 5)** 계획의 fallback 프로필 테스트 샘플(`"나는 결론부터 말하는 편이다." * 4` = 64자)은 같은 계획이 고정한 확신도 경계(0~79자 → none)와 모순된다. 경계가 핵심 계약이므로 경계를 우선하고 테스트 샘플만 ×6(96자)으로 조정해 low 밴드를 검증한다.
+- **(Task 5)** 질문 랭킹 규칙의 해석: 랭킹(source→experience→number→opinion→goal)은 유효 후보가 3개를 넘을 때 생존 선택 기준으로 쓰고, 출력 순서는 원문 후보 입력 순서를 유지한다. 계획의 리터럴 테스트(`["q1","q2","q3"]`)와 양립하는 유일한 해석이다.
 
 ## Task 진행 상황
 
@@ -40,7 +42,7 @@ LIVE_MODEL_TEST=OPTIONAL
 | 2. Stage 1 Contracts, Normalization, and Stable Spans | 대기 | - |
 | 3. Korean Pattern Catalog and Deterministic Scanner | 대기 | - |
 | 4. Claim Locker and Preservation Verifier | 대기 | - |
-| 5. Voice Profile and Context Question Validation | 대기 | - |
+| 5. Voice Profile and Context Question Validation | 완료 | `61aa51c` |
 | 6. Model Gateway, Upstage Adapter, and Structured Output Parser | 대기 | - |
 | 7. Skill Prompt Pack and Deterministic Timely Export | 대기 | - |
 | 8. Stage 1 Workflow, Parallel Critics, and One-Repair Gate | 대기 | - |

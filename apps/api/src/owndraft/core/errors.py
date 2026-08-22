@@ -1,11 +1,13 @@
 class OwnDraftError(Exception):
     """Base error with a stable machine-readable code and Korean detail."""
 
-    code = "owndraft_error"
+    code: str = "owndraft_error"
 
     def __init__(self, code: str | None = None, detail: str = "") -> None:
+        if code is not None:
+            self.code = code
         self.detail = detail
-        super().__init__(code or self.code)
+        super().__init__(f"{self.code}: {detail}" if detail else self.code)
 
 
 class ContractError(OwnDraftError):
