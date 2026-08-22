@@ -1,0 +1,17 @@
+id: social_02_event_recap
+category: social
+request:
+  text: '무척이나 뜻깊은 하루였습니다. 8월 16일 코엑스에서 열린 커뮤니티 밋업에 다녀왔습니다. 현장에는 350명 정도가 모였습니다. 발표는 아름다운 마무리로 끝났고 네트워킹 시간이 특히 좋았습니다. 다음 밋업에서 만날 분들은 댓글로 알려주세요. 도움이 되었기를 바랍니다!'
+  purpose: '행사 후기 소셜 게시물'
+  audience: '커뮤니티 멤버'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: ['코엑스']
+context_answers:
+  q_highlight: '가장 좋았던 발표는 오픈소스 소개 세션이다.'
+labels:
+  locked_values: ['8월 16일', '코엑스', '350명']
+  expected_pattern_codes: ['empty_adverb', 'decoration_overuse', 'chatbot_greeting_closing']
+  forbidden_new_claims: ['참가비 5만원을 벌었다', '다음 행사 인원은 1000명이다']
+  required_meaning: ['코엑스', '350명', '오픈소스', '8월 16일']
+  allowed_edit_summary: '과장 부사와 장식 표현을 줄이고 날짜·장소·참석 규모를 유지한다'

@@ -1,0 +1,18 @@
+id: social_03_learning_thread
+category: social
+request:
+  text: 'AI 공부 무엇일까요? 답은 바로 기초 반복입니다. 근본적으로 어제 배운 걸 오늘 다시 쓰는 게 핵심이다. 나는 매일 프롬프트 하나씩을 기록한다. 2주 동안 14개가 쌓였다. 궁금한 점이 있다면 언제든지 알려주세요.'
+  purpose: '학습 스레드'
+  audience: '스레드 팔로워'
+  edit_mode: voice
+  voice_samples:
+    - '나는 스레드에서 반말로 쓴다. 문장은 짧게 자른다. 욕심 내면 리스트 3개까지만 쓴다. 숫자는 직접 세어 적는다. 제목은 두 번 고친다.'
+  locked_phrases: []
+context_answers:
+  q_next: '다음 주부터는 평가 기준을 기록한다.'
+labels:
+  locked_values: ['2주', '14개']
+  expected_pattern_codes: ['rhetorical_question_answer', 'fake_depth_phrase', 'chatbot_greeting_closing']
+  forbidden_new_claims: ['수익이 월 500만원 생겼다', '구독자 1만 명을 모았다']
+  required_meaning: ['기초 반복', '14개', '2주', '평가 기준']
+  allowed_edit_summary: '수사적 질문과 깊이 척 표현을 걷어내되 기록 수치와 다음 계획을 유지한다'

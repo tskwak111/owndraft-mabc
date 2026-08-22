@@ -1,0 +1,17 @@
+id: blog_04_mac_switch
+category: blog
+request:
+  text: '업계 최고의 노트북을 찾아 한 달을 고민했습니다. 고민 끝에 애플 맥북 프로 M3로 바꾸기로 했습니다. 설정은 타임머신 백업과 복원 방식으로 그대로 옮겼습니다. 사용 경험에 있어서 팬 소음이 확실히 줄었습니다. 덕분에 집중해서 일할 수 있는 환경이 되었습니다.'
+  purpose: '기기 전환 경험 블로그'
+  audience: '노트북 구매를 고민하는 독자'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: ['애플 맥북 프로 M3', '타임머신']
+context_answers:
+  q_reason: '선택 기준은 발열 없이 조용히 돌아가는 것이었다.'
+labels:
+  locked_values: ['애플 맥북 프로 M3', '타임머신', '한 달']
+  expected_pattern_codes: ['promotional_superlative', 'translationese']
+  forbidden_new_claims: ['연간 100만원을 아꼈다', '모든 작업이 두 배 빨라졌다']
+  required_meaning: ['맥북 프로', '타임머신', '팬 소음', '조용히']
+  allowed_edit_summary: '최상급 표현과 번역투 문장을 다듬고 제품명과 이유를 유지한다'

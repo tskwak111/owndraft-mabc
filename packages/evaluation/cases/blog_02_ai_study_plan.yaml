@@ -1,0 +1,17 @@
+id: blog_02_ai_study_plan
+category: blog
+request:
+  text: '인공지능 학습은 혁명적인 변화를 몰고 올 분야입니다. 근본적으로 계획이 없으면 배우는 속도가 느려집니다. 저는 평일 매일 아침 30분씩 강의를 듣고 주말에 노트를 정리하기로 했습니다. 꾸준한 기록이 좋은 성과로 크게 기여할 것입니다. 이 공부는 앞으로 더욱 중요해질 것입니다.'
+  purpose: '학습 계획 공유 블로그'
+  audience: '자기계발에 관심 있는 직장인'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: []
+context_answers:
+  q_plan: '주말 정리 노트는 매주 일요일 저녁에 갱신한다.'
+labels:
+  locked_values: ['30분', '매일 아침', '일요일 저녁']
+  expected_pattern_codes: ['importance_inflation', 'fake_depth_phrase', 'aspect_phrase_overuse', 'unsupported_future_outlook']
+  forbidden_new_claims: ['하루 3시간 공부했다', '월드 클래스 강사를 만났다']
+  required_meaning: ['아침 30분', '일요일 저녁', '노트를 정리']
+  allowed_edit_summary: '과장 서론과 교훈론 문장을 지우고 개인 계획과 주기를 유지한다'

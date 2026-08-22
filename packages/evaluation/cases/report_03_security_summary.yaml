@@ -1,0 +1,17 @@
+id: report_03_security_summary
+category: report
+request:
+  text: '최근 공개된 취약점과 대응 상태를 요약합니다. CVE-2026-1234는 관리자 권한을 가진 경우에만 위험합니다. 일반 계정에는 모두에게 필요한 조치는 아닙니다. 서버 패치 검증은 금주 내 이루어집니다. 단, 레거시 시스템은 예외 대상에서 제외합니다. 완료 후 결과를 공유하겠습니다.'
+  purpose: '보안 요약 보고서'
+  audience: '경영진'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: ['CVE-2026-1234']
+context_answers:
+  q_scope: '레거시 시스템 2대는 9월로 연기한다.'
+labels:
+  locked_values: ['CVE-2026-1234', '관리자 권한', '제외', '9월']
+  expected_pattern_codes: ['false_balance', 'passive_voice_overuse']
+  forbidden_new_claims: ['피해 금액은 10억 원이다', '해킹 시도가 0건이다']
+  required_meaning: ['CVE-2026-1234', '관리자 권한', '제외', '9월']
+  allowed_edit_summary: '과잉 일반화 문장을 고치되 취약점 ID와 적용 범위·예외를 유지한다'

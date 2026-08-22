@@ -1,0 +1,17 @@
+id: email_04_meeting_followup
+category: email
+request:
+  text: '지난 회의 후속 조치를 공유드립니다. 요즘 직장인들은 회의가 끝나면 액션 아이템이 흩어지곤 하는데 저희 팀은 정리를 시작했습니다. QA 검토는 박지현 팀장이 담당합니다. 개발 반영은 김현우 책임자가 담당합니다. 마감 기한은 9월 5일까지입니다. 이런 정리가 팀 전체에 큰 도움이 됩니다.'
+  purpose: '회의 후속 조치 메일'
+  audience: '프로젝트 관련자'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: ['박지현', '김현우']
+context_answers:
+  q_deadline: '중간 점검 회의는 9월 2일에 진행한다.'
+labels:
+  locked_values: ['박지현', '김현우', '9월 5일', '9월 2일']
+  expected_pattern_codes: ['unjustified_social_generalization', 'aspect_phrase_overuse']
+  forbidden_new_claims: ['프로젝트가 완료되었다', '일정을 연말로 미뤘다']
+  required_meaning: ['박지현', '9월 5일', '중간 점검', '담당합니다']
+  allowed_edit_summary: '집단 일반화와 상투 효용 문장을 줄이고 담당자와 기한을 유지한다'

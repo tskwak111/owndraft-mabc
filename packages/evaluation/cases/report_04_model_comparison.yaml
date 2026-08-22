@@ -1,0 +1,17 @@
+id: report_04_model_comparison
+category: report
+request:
+  text: '두 모델의 응답 속도를 비교했습니다. solar-pro4는 평균 320ms, 경량 모델 mini-7B는 480ms였습니다. 즉 solar-pro4가 더 빠릅니다. 정확도 평가에서는 mini-7B가 낮은 편이었습니다. 극도로 단순한 프롬프트에서는 차이가 작았습니다. 요약하자면 속도는 solar-pro4, 경량성은 mini-7B가 유리합니다.'
+  purpose: '모델 비교 보고서'
+  audience: 'ML 플랫폼 팀'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: ['solar-pro4', 'mini-7B']
+context_answers:
+  q_cost: '비용은 천 건당 solar-pro4가 900원, mini-7B가 300원이다.'
+labels:
+  locked_values: ['320ms', '480ms', 'solar-pro4', 'mini-7B', '900원', '300원']
+  expected_pattern_codes: ['empty_adverb', 'automatic_conclusion_marker']
+  forbidden_new_claims: ['mini-7B가 정확도에서 앞선다', '평균 지연이 800ms이다']
+  required_meaning: ['320ms', '480ms', '더 빠릅니다', '900원']
+  allowed_edit_summary: '과장 부사와 결론 마커를 다듬되 속도·비용의 상대 순서를 뒤집지 않는다'

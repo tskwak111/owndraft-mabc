@@ -1,0 +1,18 @@
+id: blog_01_meeting_minutes
+category: blog
+request:
+  text: '빠르게 변화하는 디지털 시대에는 AI가 업무 혁신의 핵심 파트너가 되었습니다. AI는 단순한 도구를 넘어 더 효율적이고 생산적인 결과를 만들 수 있습니다. 저는 회의록 정리 업무에 Solar를 활용하기 시작했습니다.'
+  purpose: 'AI 활용 경험 블로그'
+  audience: '대학생'
+  edit_mode: voice
+  voice_samples:
+    - '나는 결론부터 말하는 편이다. 근거 없는 수식어는 쓰지 않는다. 일단 써보고 안 되면 갈아타는 게 내 방식이다. 회의록은 매주 여러 개를 다룬다.'
+  locked_phrases: ['Solar']
+context_answers:
+  q_metric: '회의록 정리 시간은 40분에서 5분으로 줄었다.'
+labels:
+  locked_values: ['Solar', '40분', '5분']
+  expected_pattern_codes: ['era_background_intro', 'beyond_x_to_y', 'abstract_positive_effect']
+  forbidden_new_claims: ['정확도가 95%', '모든 업무가 자동화되었다']
+  required_meaning: ['회의록 정리', 'Solar', '40분', '5분']
+  allowed_edit_summary: '시대 배경 서론과 추상 문장을 삭제하고 실제 수치 중심으로 재구성한다'

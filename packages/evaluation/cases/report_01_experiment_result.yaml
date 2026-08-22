@@ -1,0 +1,17 @@
+id: report_01_experiment_result
+category: report
+request:
+  text: '연구에 따르면 데이터 증강이 소규모 모델에 큰 도움이 될 것입니다. 본 실험에서는 자체 데이터 12,000건으로 증강을 적용했습니다. 정확도는 베이스라인 82.1%에서 87.4%로 상승했습니다. 다만 학습 시간은 6시간에서 9시간으로 늘어났습니다. 결론적으로 증강 기법은 앞으로 더욱 중요해질 것입니다.'
+  purpose: '실험 결과 보고서'
+  audience: '연구 책임자'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: []
+context_answers:
+  q_limit: '한계: 학습 데이터는 단일 도메인 뉴스 기사다.'
+labels:
+  locked_values: ['12,000건', '82.1%', '87.4%', '6시간', '9시간']
+  expected_pattern_codes: ['vague_authority', 'aspect_phrase_overuse', 'automatic_conclusion_marker']
+  forbidden_new_claims: ['정확도 95%를 돌파했다', '추론 비용이 절반으로 줄었다']
+  required_meaning: ['82.1%', '87.4%', '단일 도메인', '12,000건']
+  allowed_edit_summary: '출처 불명 인용과 결론 마커를 정리하고 측정값과 한계 구분을 유지한다'

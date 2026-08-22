@@ -1,0 +1,18 @@
+id: report_05_team_weekly_update
+category: report
+request:
+  text: '주간 업데이트입니다. 데이터 파이프라인 리팩터링은 완료했습니다. 알림 모듈은 아직 완료되지 않았고 다음 주로 넘깁니다. 보고서 작성은 체계화되고 있어 진행 중입니다. 이 과제는 더욱 중요해지고 있습니다. 차주 계획은 알림 모듈 마무리와 QA 요청입니다.'
+  purpose: '팀 주간 업데이트'
+  audience: '매니저'
+  edit_mode: voice
+  voice_samples:
+    - '나는 주간 보고를 짧게 쓴다. 끝낸 것과 못 끝낸 것을 먼저 나눈다. 다음 주 계획은 세 줄을 넘지 않는다. 블로커가 있으면 사실대로 적는다. 수치는 추정치를 적지 않는다.'
+  locked_phrases: []
+context_answers:
+  q_blocker: '차질 사유는 API 키 발급 지연이다.'
+labels:
+  locked_values: ['완료되지 않았', '알림 모듈', '다음 주', 'API 키']
+  expected_pattern_codes: ['nominalization_overuse', 'importance_possibility_repetition']
+  forbidden_new_claims: ['알림 모듈을 완료했다', '일정보다 2주 앞섰다']
+  required_meaning: ['완료되지 않았', 'API 키', '다음 주', '리팩터링은 완료했습니다']
+  allowed_edit_summary: '명사화 문장과 중요성 강조를 줄이고 완료·미완료 상태를 그대로 유지한다'

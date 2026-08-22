@@ -1,0 +1,18 @@
+id: email_05_polite_decline
+category: email
+request:
+  text: '제안서를 정성껏 검토했습니다. 다만 이번 분기 외부 강연은 불가능합니다. 사내 일정이 밀려 있고 준비 시간을 확보하지 못했습니다. 내부 웨비나라면 어떨까요?라는 대안은 검토해 보겠습니다. 아마도 다음 분기 상황이 나아질 것 같습니다. 그때는 좋은 제안이 될 수 있을 것 같습니다.'
+  purpose: '외부 강연 거절 메일'
+  audience: '제안한 협력사 담당자'
+  edit_mode: voice
+  voice_samples:
+    - '나는 거절할 때 빙 돌려 말하지 않는다. 이유를 먼저 말한다. 대안이 있으면 함께 적는다. 애매한 약속은 하지 않는다. 일정이 되면 그때 연락한다.'
+  locked_phrases: ['외부 강연', '웨비나']
+context_answers:
+  q_timing: '다음 검토는 10월 중순으로 조정한다.'
+labels:
+  locked_values: ['외부 강연', '불가능', '웨비나', '10월 중순']
+  expected_pattern_codes: ['rhetorical_question_answer', 'excessive_hedging']
+  forbidden_new_claims: ['강연을 수락했다', '일정 문제는 없다']
+  required_meaning: ['불가능', '웨비나', '10월 중순']
+  allowed_edit_summary: '수사적 질문과 과도한 추측을 걷어내되 거절 의지와 대안을 유지한다'

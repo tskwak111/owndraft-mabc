@@ -1,0 +1,17 @@
+id: social_04_project_demo
+category: social
+request:
+  text: '사이드 프로젝트 데모를 올립니다. 이 도구가 진짜 게임 체인저라고 생각합니다. 회의 녹음을 넣으면 요약이 만들어집니다. 데모에서는 3분짜리 녹음을 사용했습니다. 정식 출시는 다음 달로 계획합니다. 아마도 세부 일정은 조금 더 필요할 것 같습니다. 피드백은 댓글로 부탁합니다.'
+  purpose: '프로젝트 데모 소개 게시물'
+  audience: 'SNS 팔로워'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: []
+context_answers:
+  q_scope: '지원 언어는 한국어와 영어 두 개다.'
+labels:
+  locked_values: ['3분', '데모']
+  expected_pattern_codes: ['importance_inflation', 'excessive_hedging']
+  forbidden_new_claims: ['처리 속도가 5배 빠르다', '사용자 1000명이 가입했다']
+  required_meaning: ['3분', '요약', '한국어와 영어']
+  allowed_edit_summary: '과장 표현과 추측 문장을 줄이되 데모 범위 밖 성능 주장을 만들지 않는다'

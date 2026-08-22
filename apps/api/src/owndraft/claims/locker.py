@@ -25,7 +25,7 @@ _TIME_RE = re.compile(r"(?:오전|오후)?\s*\d{1,2}\s*시(?:\s*\d{1,2}\s*분)?(
 _NUMBER_RE = re.compile(
     r"\d[\d,]*(?:\.\d+)?"
     r"(?:\s*만 ?원|억 ?원|천 ?원|백만 ?원|원|달러|유로|엔|퍼센트|%|배|"
-    r"개|명|건|회|번|분|시간|초|일간|일|주일|주|개월|달|년|km|KM|Km|kg|KG|g|m|cm|mm|"
+    r"개|명|건|회|번|분|시간|초|일간|일|주일|주|개월|달|년|ms|km|KM|Km|kg|KG|mm|cm|g|m|"
     r"GB|MB|KB|TB|GiB|Mib|GHz|MHz|Hz|°C|℃|도|포인트|점|석|층|페이지|장)"
 )
 _NEGATION_RE = re.compile(

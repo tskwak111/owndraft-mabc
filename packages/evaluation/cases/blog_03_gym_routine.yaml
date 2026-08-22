@@ -1,0 +1,18 @@
+id: blog_03_gym_routine
+category: blog
+request:
+  text: '홈트레이닝은 운동 습관의 게임 체인저입니다. 빠르고, 간편하고, 확실한 홈트 루틴이 요즘 유행입니다. 굉장히 많은 사람들이 따라 하지만 계획 없이 시작하면 오래가지 못합니다. 저는 주 3회, 회당 40분씩 하체와 유산소를 번갈아 진행합니다. 비가 오는 날은 실외 러닝을 제외하고 홈트로 대체합니다.'
+  purpose: '운동 루틴 공유 블로그'
+  audience: '운동을 시작하려는 독자'
+  edit_mode: voice
+  voice_samples:
+    - '나는 운동을 거창하게 시작하지 않는다. 일단 신발만 신고 나간다. 부상이 두려우면 무게를 줄인다. 기록은 앱에 짧게 남긴다. 비 오는 날은 집에서 끝낸다.'
+  locked_phrases: []
+context_answers:
+  q_detail: '회당 마지막 10분은 걷기로 마무리한다.'
+labels:
+  locked_values: ['3회', '40분', '10분', '제외']
+  expected_pattern_codes: ['importance_inflation', 'triple_adjective_list', 'empty_adverb']
+  forbidden_new_claims: ['일주일에 5kg을 뺐다', '완벽한 식단을 완성했다']
+  required_meaning: ['주 3회', '40분', '걷기', '제외']
+  allowed_edit_summary: '과장 문구와 형용사 나열을 줄이고 개인 루틴 수치와 조건을 유지한다'

@@ -1,0 +1,17 @@
+id: social_01_product_launch
+category: social
+request:
+  text: '안녕하세요! 반갑습니다. 드디어 SnapNote 정식 버전을 출시했습니다. 세상을 바꿀 노트 앱이라는 말, 과장은 아닙니다. 압도적으로 빠른 동기화와 최고의 검색 속도를 자랑합니다. 정가 39,000원, 출시 기념 20% 할인 중입니다. 지금 만나보세요!'
+  purpose: '제품 출시 소셜 게시물'
+  audience: 'SNS 팔로워'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: ['SnapNote']
+context_answers:
+  q_launch: '출시 기념 할인은 8월 31일까지다.'
+labels:
+  locked_values: ['SnapNote', '39,000원', '20%', '8월 31일']
+  expected_pattern_codes: ['chatbot_greeting_closing', 'importance_inflation', 'promotional_superlative']
+  forbidden_new_claims: ['첫 주 다운로드 10만 건', '평점 4.9를 받았다']
+  required_meaning: ['SnapNote', '39,000원', '8월 31일', '동기화']
+  allowed_edit_summary: '챗봇 인사와 과장 수식을 걷어내되 제품명과 가격·할인 조건을 유지한다'

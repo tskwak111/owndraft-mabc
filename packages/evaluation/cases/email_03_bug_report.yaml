@@ -1,0 +1,17 @@
+id: email_03_bug_report
+category: email
+request:
+  text: "v2.3.1 버그 리포트입니다. 로그인 페이지 함에 있어 세션 처리에 문제가 있습니다. 재현 순서는 로그인 버튼 클릭 후 새로고침이며 세션이 유지되지 않습니다. 서버 로그에는 에러가 기록되지 않습니다. 담당자는 재현이 되어졌다고 말했지만 제 환경에서는 10회 중 10회 재현됩니다."
+  purpose: '버그 리포트 메일'
+  audience: '백엔드 개발팀'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: ['v2.3.1']
+context_answers:
+  q_env: '브라우저는 Chrome 126, OS는 macOS 14다.'
+labels:
+  locked_values: ['v2.3.1', '10회', 'Chrome 126', 'macOS 14']
+  expected_pattern_codes: ['translationese', 'passive_voice_overuse']
+  forbidden_new_claims: ["핫픽스로 해결되었다", "재현율은 10%이다"]
+  required_meaning: ['v2.3.1', '10회 중 10회', '유지되지 않습니다', 'Chrome 126']
+  allowed_edit_summary: '번역투 표현과 이중 피동을 고치되 재현 순서와 부정 사실을 유지한다'

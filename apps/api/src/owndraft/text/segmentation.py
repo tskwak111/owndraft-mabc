@@ -30,11 +30,11 @@ def _sentence_end_positions(paragraph: str) -> list[int]:
         if (
             paragraph[match.start()] == "."
             and 0 < match.start()
-            and paragraph[match.start() - 1].isdigit()
             and end < len(paragraph)
-            and paragraph[end].isdigit()
+            and paragraph[match.start() - 1].isalnum()
+            and paragraph[end].isalnum()
         ):
-            # decimal numbers such as "3.5" must not split a sentence
+            # decimals (3.5) and domain names (example.com) must not split
             position = end
             continue
         ends.append(end)

@@ -1,0 +1,17 @@
+id: blog_05_project_retrospective
+category: blog
+request:
+  text: '이번 글에서는 실패한 프로젝트 회고를 정리합니다. 처음 계획보다 일정이 밀렸고 원인은 제 검증 생략에 있었습니다. 본질적으로 실패를 감추면 같은 실수를 반복하게 됩니다. 연구에 따르면 회고 문화가 팀 성과를 높인다고 알려져 있습니다. 결국 다음 스프린트부터는 데모를 매주 열기로 했습니다.'
+  purpose: '프로젝트 회고 블로그'
+  audience: '동료 개발자'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: []
+context_answers:
+  q_next: '데모는 매주 금요일 오후 4시로 고정한다.'
+labels:
+  locked_values: ['스프린트', '4시', '매주 금요일']
+  expected_pattern_codes: ['meta_roadmap', 'fake_depth_phrase', 'vague_authority', 'automatic_conclusion_marker']
+  forbidden_new_claims: ['수익을 두 배로 늘렸다', '고객 만족도 99%를 달성했다']
+  required_meaning: ['회고', '금요일', '우선순위']
+  allowed_edit_summary: '목차 안내와 출처 불명 문장을 지우고 실패 원인과 다음 계획을 유지한다'

@@ -1,0 +1,17 @@
+id: email_01_schedule_change
+category: email
+request:
+  text: '안녕하세요. 기획팀입니다. 많은 분들이 일정 충돌로 어려움을 겪고 있어 회의 시간을 옮깁니다. 회의는 8월 28일 오후 3시, 회의실 B에서 진행합니다. 아마도 좌석 배치는 당일 조정될 것 같습니다. 참석 가능 여부를 이 메일로 회신해 주세요. 회신이 어려운 경우 김민수(kim@example.com)께 전화로 알려주세요.'
+  purpose: '회의 일정 변경 안내 메일'
+  audience: '기획팀 동료'
+  edit_mode: minimal
+  voice_samples: []
+  locked_phrases: ['김민수', '회의실 B']
+context_answers:
+  q_confirm: '회신 마감은 8월 26일까지다.'
+labels:
+  locked_values: ['8월 28일', '오후 3시', 'kim@example.com', '김민수', '회의실 B']
+  expected_pattern_codes: ['vague_problem_statement', 'excessive_hedging']
+  forbidden_new_claims: ['회의가 취소되었다', '새 회의실로 예약되었다']
+  required_meaning: ['8월 28일', '오후 3시', '회신', '8월 26일']
+  allowed_edit_summary: '막연한 문제 제기와 추측 문장을 다듬고 일정과 회신 절차를 유지한다'
