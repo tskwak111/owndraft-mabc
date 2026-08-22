@@ -1,0 +1,670 @@
+OWNDRAFT_SKILL_VERSION: bb6e219b219b
+GENERATED_FROM_REPOSITORY: true
+CONTENT_SHA256: bb6e219b219bf5cd8c7b4267966298fe3ce85a3110287abe980c4d89a77c52cf
+##############################################################################
+
+# SOURCE: skills/owndraft/SKILL.md
+
+---
+name: owndraft
+description: AI 초안을 사용자의 실제 말투로 다듬되 숫자·날짜·이름·기관·제품·출처·직접 인용·핵심 주장을 보존해야 할 때 사용한다. AI 탐지 우회나 워터마크 제거를 보장하는 용도로 사용하지 않는다.
+---
+
+# 역할
+
+너는 한국어 글을 다시 만들어 주는 대필기가 아니라 사실 보존형 편집 에이전트다.
+사용자의 원문, 목적, 독자, 문체 샘플, 잠금 표현을 분석한 뒤 사용자의 실제 생각과 표현을 더 잘 드러내도록 편집한다.
+
+# 절대 금지
+
+- 원문이나 사용자 답변에 없는 사실·통계·출처·경험·인용을 추가하지 않는다.
+- 숫자와 단위, 날짜, 이름, 기관, 제품, 링크, 직접 인용, 부정, 조건, 예외를 바꾸지 않는다.
+- AI 탐지 0%, 워터마크 제거, Turnitin 통과를 약속하거나 최적화하지 않는다.
+- 살아 있는 작가나 특정 개인의 고유 문체를 그대로 복제하지 않는다.
+
+# 처리 순서
+
+1. 목적·독자·수정 강도·문체 샘플·잠금 표현을 확인한다.
+2. 원문에서 보존할 사실과 핵심 주장을 먼저 목록화한다.
+3. 한국어 AI 글쓰기 신호 중 문맥에 맞지 않는 것만 진단한다.
+4. 문체 샘플이 80자 미만이면 최소 수정으로 전환하고 이유를 알린다.
+5. 결과 품질을 크게 높일 정보가 없을 때만 최대 3개의 구체적인 질문을 한다.
+6. 질문이 필요하면 재작성하지 말고 질문까지만 출력한다.
+7. 정보가 충분하면 재작성 계획을 세우고 한 개 수정본을 만든다.
+8. 원문과 수정본의 사실·부정·조건·인과·핵심 주장을 비교한다.
+9. 오류가 있으면 한 번만 고친다. 다시 실패하면 원문을 유지하고 문제 구간을 표시한다.
+
+# 수정 모드
+
+- 최소 수정: 원문 구조와 표현을 최대한 유지하고 상투적이거나 부자연스러운 부분만 고친다.
+- 내 말투 수정: 사실을 유지하면서 검증된 문체 프로필을 적용한다. 샘플의 단어를 억지로 반복하지 않는다.
+
+# 맥락 질문 규칙
+
+- 최대 3개다.
+- 한 질문에서 경험·수치·의견·목표·출처 중 하나만 묻는다.
+- 이미 원문에 있는 내용을 다시 묻지 않는다.
+- "더 구체적으로 말해 달라"처럼 막연하게 묻지 않는다.
+- 사용자가 건너뛰면 사실을 만들지 말고 보수적으로 편집한다.
+
+# 사용자 출력 형식
+
+정보가 부족할 때:
+
+## 진단 요약
+- 주요 신호와 이유
+
+## 확인할 내용
+1. 답하기 쉬운 구체적인 질문
+
+## 현재 보존 중인 사실
+- 잠긴 항목 요약
+
+정보가 충분할 때:
+
+## 진단 요약
+- 주요 신호 3~7개
+
+## 수정본
+완성된 글
+
+## 주요 변경 이유
+- 큰 수정 3~7개
+
+## 사실 보존 결과
+- 이름·기관·제품
+- 숫자·날짜·단위
+- 출처·인용
+- 삭제되거나 의미가 바뀐 핵심 주장
+- 새로 추가한 사실
+
+# 실패 출력
+
+사실 보존을 확인할 수 없으면 안전한 척 완성본을 내지 않는다.
+문제 구간, 원문 유지 권고, 사용자 확인이 필요한 항목을 표시한다.
+
+##############################################################################
+
+# SOURCE: skills/owndraft/references/pattern_catalog_ko.yaml
+
+# OwnDraft 한국어 AI 글쓰기 패턴 카탈로그 (40개)
+#
+# regexes는 확실한 표현만 탐지한다. 문맥 판단이 필요한 패턴은 regexes: []로 두고
+# LLM 진단 단계에서만 사용한다. 카탈로그 코드 순서와 개수는 계약 고정 항목이다.
+- code: era_background_intro
+  category: content
+  description_ko: 구체적인 맥락 없이 시대 배경으로 글을 시작함
+  severity: medium
+  default_action: delete
+  regexes:
+    - "빠르게 변화하는 (현대|디지털) (사회|시대)(에서|에는)"
+    - "급변하는 (현대|오늘날) (사회|시대)"
+  examples:
+    - "빠르게 변화하는 현대 사회에서"
+  exemptions:
+    - "역사적 시기 자체가 분석 대상인 글"
+
+- code: importance_inflation
+  category: content
+  description_ko: 근거 없이 대상의 중요성을 과장함
+  severity: medium
+  default_action: rewrite
+  regexes:
+    - "게임 ?체인저"
+    - "혁명적인 변화"
+    - "세상을 바꿀 "
+  examples:
+    - "AI는 게임 체인저입니다"
+  exemptions:
+    - "실제 성과 수치와 함께 비교한 경우"
+
+- code: unsupported_future_outlook
+  category: content
+  description_ko: 근거 없이 미래 전망을 단정적으로 제시함
+  severity: medium
+  default_action: rewrite
+  regexes:
+    - "것으로 (기대됩니다|전망됩니다|예상됩니다)"
+    - "앞으로 더욱 중요해질 것입니다"
+  examples:
+    - "앞으로 더욱 중요해질 것으로 기대됩니다"
+  exemptions:
+    - "공식 발표나 데이터에 근거를 댄 경우"
+
+- code: abstract_positive_effect
+  category: content
+  description_ko: 효과가 무엇인지 구체적 대상이나 결과 없이 추상적으로 서술함
+  severity: medium
+  default_action: ask
+  regexes:
+    - "더 나은 (삶|미래|세상)을( 위해| 만들)"
+    - "긍정적인 영향을 미칠 것입니다"
+    - "효율적이고 생산적인 결과를 만들 수 있습니다"
+  examples:
+    - "더 나은 미래를 만들 수 있습니다"
+  exemptions:
+    - "바로 앞 문장에서 효과의 구체적 대상을 밝힌 경우"
+
+- code: promotional_superlative
+  category: content
+  description_ko: 근거 없는 최상급·초월적 표현으로 홍보함
+  severity: medium
+  default_action: rewrite
+  regexes:
+    - "(세계 최초의?|업계 유일의?|압도적으로|최고의)"
+  examples:
+    - "업계 유일의 혁신"
+  exemptions:
+    - "공식 기록이나 검증된 수치를 인용한 경우"
+
+- code: vague_authority
+  category: content
+  description_ko: 출처를 밝히지 않은 채 권위에 호소함
+  severity: medium
+  default_action: ask
+  regexes:
+    - "연구에 따르면"
+    - "전문가들?은? (말합니다|강조합니다|지적합니다)"
+    - "알려져 있습니다"
+  examples:
+    - "연구에 따르면 이 방법이 효과적입니다"
+  exemptions:
+    - "같은 문단에서 구체적 출처를 함께 밝힌 경우"
+
+- code: false_balance
+  category: content
+  description_ko: 예외를 무시한 채 누구에게나 통하는 결론처럼 서술함
+  severity: medium
+  default_action: ask
+  regexes:
+    - "(모두에게|누구에게나) (맞는|좋은|필요한)"
+  examples:
+    - "이 방법은 모두에게 맞습니다"
+  exemptions:
+    - "적용 범위를 명시적으로 제한한 경우"
+
+- code: empty_implication
+  category: content
+  description_ko: 실제 내용 없이 함축만 남발함
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "이는 곧 .*을 의미합니다"
+    - "이 말은 즉"
+  examples:
+    - "이는 곧 변화의 시작을 의미합니다"
+  exemptions: []
+
+- code: conclusion_repetition
+  category: structure
+  description_ko: 같은 결론을 여러 문단에 반복함
+  severity: low
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "결국 중요한 것은 꾸준함이다(가 3문단 이상 반복)"
+  exemptions:
+    - "보고서 요약 구조에서 의도된 반복"
+
+- code: meta_roadmap
+  category: structure
+  description_ko: 본문 내용 대신 글의 구성 안내를 늘어놓음
+  severity: low
+  default_action: delete
+  regexes:
+    - "이번 글에서는?"
+    - "지금부터는?"
+    - "먼저 .* 다음으로 .* 마지막으로"
+  examples:
+    - "이번 글에서는 단계별로 살펴보겠습니다"
+  exemptions: []
+
+- code: vague_problem_statement
+  category: content
+  description_ko: 구체적 상황 없이 막연한 공통 고민으로 문제를 제기함
+  severity: low
+  default_action: ask
+  regexes:
+    - "많은 (사람들|분들)이 .*(고민|어려움을 겪)"
+  examples:
+    - "많은 사람들이 시간 관리에 어려움을 겪고 있습니다"
+  exemptions:
+    - "통계나 설문 출처를 밝힌 경우"
+
+- code: unjustified_social_generalization
+  category: content
+  description_ko: 근거 없이 특정 집단 전체를 일반화함
+  severity: medium
+  default_action: rewrite
+  regexes:
+    - "요즘 (사람들|젊은이들|학생들|직장인들)(은|는)?"
+    - "사람들은 모두"
+  examples:
+    - "요즘 직장인들은 모두 번아웃에 시달린다"
+  exemptions:
+    - "설문·통계 등 확인 가능한 근거를 댄 경우"
+
+- code: mechanical_triple_list
+  category: structure
+  description_ko: 매 문단마다 세 개 항목 나열을 기계적으로 반복함
+  severity: medium
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "속도, 비용, 그리고 품질(가 모든 문단에 반복)"
+  exemptions:
+    - "항목 수가 실제 분석 결과와 일치하는 경우"
+
+- code: uniform_paragraph_length
+  category: structure
+  description_ko: 문단 길이가 지나치게 균일하여 기계적으로 느껴짐
+  severity: low
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "모든 문단이 3문장씩"
+  exemptions: []
+
+- code: repeated_claim_explain_summary
+  category: structure
+  description_ko: 주장–설명–요약 삼각 구조를 매번 동일하게 반복함
+  severity: medium
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "X가 중요합니다. 왜냐하면… 따라서 X가 중요합니다."
+  exemptions: []
+
+- code: excessive_headings
+  category: structure
+  description_ko: 짧은 글에 불필요하게 많은 소제목을 사용함
+  severity: low
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "500자 글에 소제목 5개"
+  exemptions:
+    - "레퍼런스 문서처럼 조회 편의가 목적인 글"
+
+- code: unnecessary_ordinal_structure
+  category: structure
+  description_ko: 내용상 필요 없는 열거형 번호 구조를 강제함
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "(첫째|첫 번째)[,.] .*(둘째|두 번째)[,.]"
+  examples:
+    - "첫째, 준비. 둘째, 실행. 셋째, 검토."
+  exemptions:
+    - "절차 안내처럼 순서 자체가 정보인 경우"
+
+- code: uniform_sentence_length
+  category: structure
+  description_ko: 문장 길이가 지나치게 균일하여 리듬이 단조로움
+  severity: low
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "~습니다. ~습니다. ~습니다."
+  exemptions: []
+
+- code: rhetorical_question_answer
+  category: structure
+  description_ko: 수사적 질문 후 스스로 답하는 템플릿 구조를 남용함
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "(왜일까요\\?|무엇일까요\\?|어떨까요\\?|답은 바로)"
+  examples:
+    - "그 비결은 무엇일까요? 바로 꾸준함입니다."
+  exemptions:
+    - "인터뷰 형식처럼 질문이 장르적 장치인 글"
+
+- code: pros_cons_conclusion_template
+  category: structure
+  description_ko: 장점–단점–결론 템플릿을 내용에 맞지 않게 적용함
+  severity: medium
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "장점으로 … 단점으로 … 결론적으로 …"
+  exemptions:
+    - "비교 리뷰처럼 양면 평가가 목적인 글"
+
+- code: parallel_grammar_overfit
+  category: structure
+  description_ko: 모든 문장을 동일한 문법 구조로 병렬 맞춤함
+  severity: low
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "…하는 법. …하는 법. …하는 법."
+  exemptions: []
+
+- code: oversized_conclusion
+  category: structure
+  description_ko: 결론이 본문보다 길어져 새 주장까지 덧붙임
+  severity: medium
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "본문 5문장 + 결론 10문장"
+  exemptions: []
+
+- code: beyond_x_to_y
+  category: expression
+  description_ko: 단순한 X를 넘어 Y 형태의 상투적 격상 구문을 사용함
+  severity: high
+  default_action: rewrite
+  regexes:
+    - "단순한? [^\\s]+(을|를) 넘어"
+    - "그저 [^\\s]+(이|가) 아닌"
+  examples:
+    - "단순한 도구를 넘어 파트너"
+  exemptions: []
+
+- code: connector_repetition
+  category: expression
+  description_ko: "그리고·또한·따라서 같은 연결어를 과도하게 반복함"
+  severity: medium
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "그리고 … 그리고 … 그리고 …"
+  exemptions: []
+
+- code: can_do_ending_repetition
+  category: expression
+  description_ko: ~할 수 있습니다 종결을 연달아 반복함
+  severity: medium
+  default_action: rewrite
+  regexes: []
+  examples:
+    - "할 수 있습니다. 할 수 있습니다."
+  exemptions: []
+
+- code: aspect_phrase_overuse
+  category: expression
+  description_ko: ~에 큰 도움이 됩니다 식 상투적 효용 표현을 남용함
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "큰 도움이 될? 것?입니"
+    - "크게 기여할 것입니다"
+  examples:
+    - "업무에 큰 도움이 될 것입니다"
+  exemptions: []
+
+- code: nominalization_overuse
+  category: expression
+  description_ko: ~화 명사화 표현을 과도하게 사용해 딱딱해짐
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "(자동화|최적화|표준화|효율화|체계화)(되어|되고|됩니다)"
+  examples:
+    - "프로세스를 체계화됩니다"
+  exemptions: []
+
+- code: passive_voice_overuse
+  category: expression
+  description_ko: 이중 피동 "되어지다" 등 피동 표현을 남용함
+  severity: medium
+  default_action: rewrite
+  regexes:
+    - "(되어집니다|되어졌|이루어집니다|받아들여집니다)"
+  examples:
+    - "완료되어졌습니다"
+  exemptions: []
+
+- code: translationese
+  category: expression
+  description_ko: ~에 있어서 등 번역투 어순·표현을 사용함
+  severity: medium
+  default_action: rewrite
+  regexes:
+    - "(에 있어서|함에 있어|큰 의미에서 볼 때|측면에서 볼 때)"
+  examples:
+    - "업무에 있어서 중요한 점은"
+  exemptions: []
+
+- code: dash_colon_overuse
+  category: expression
+  description_ko: 한 문장 안에 줄표·콜론 강조를 과도하게 겹쳐 씀
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "—[^—]*—"
+    - "\\*\\*[^*]+\\*\\*.*\\*\\*[^*]+\\*\\*"
+  examples:
+    - "핵심 — 바로 이것 — 이다"
+  exemptions: []
+
+- code: triple_adjective_list
+  category: expression
+  description_ko: 형용사 세 개 병렬 나열을 습관적으로 사용함
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "[가-힣]{2,}고,? [가-힣]{2,}고,? [가-힣]{2,}(한|된)"
+  examples:
+    - "빠르고, 간편하고, 편리한 도구"
+  exemptions: []
+
+- code: excessive_hedging
+  category: expression
+  description_ko: 불필요한 완곡·추측 표현을 겹쳐 씀
+  severity: medium
+  default_action: rewrite
+  regexes:
+    - "아마도 .*것 같습니다"
+    - "(일지도 모릅니다|수 있을 것 같습니다)"
+  examples:
+    - "아마도 도움이 될 수 있을 것 같습니다"
+  exemptions:
+    - "불확실성을 명시해야 하는 보고서 한계 서술"
+
+- code: automatic_conclusion_marker
+  category: expression
+  description_ko: 문장 시작을 "결론적으로" 등 자동 마커로 열며 결론을 강제함
+  severity: medium
+  default_action: delete
+  regexes:
+    - "^(결론적으로|결국[,،]? |요약하자면|종합하면|정리하자면)"
+  examples:
+    - "결론적으로 중요합니다"
+  exemptions: []
+
+- code: importance_possibility_repetition
+  category: expression
+  description_ko: 더욱 중요해질 것 식 중요성 강조를 반복함
+  severity: medium
+  default_action: rewrite
+  regexes:
+    - "(더욱 중요해질 것입니다|중요성이 (더욱|점점) 커질|더욱 중요해지고 있습니다)"
+  examples:
+    - "그 중요성은 더욱 커질 것입니다"
+  exemptions: []
+
+- code: not_x_but_y_drama
+  category: expression
+  description_ko: A가 아니라 B 형태의 대비 구문으로 극적 반전을 만듦
+  severity: medium
+  default_action: rewrite
+  regexes:
+    - "단순히? .*(이|가) 아니라 .*(입니다|다)\\.?$"
+  examples:
+    - "기술이 아니라 사람입니다"
+  exemptions: []
+
+- code: fake_depth_phrase
+  category: expression
+  description_ko: 깊이 있는 듯 보이는 관용 표현으로 감을 대신함
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "^(본질적으로|근본적으로|궁극적으로)"
+    - "궁극적인 목표는"
+  examples:
+    - "본질적으로 이것은 변화입니다"
+  exemptions: []
+
+- code: empty_adverb
+  category: expression
+  description_ko: 내용을 추가하지 않는 강조 부사를 남발함
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "(굉장히|지극히|극도로|무척이나)"
+  examples:
+    - "굉장히 유용한 도구"
+  exemptions:
+    - "같은 문단에서 수치로 뒷받침한 경우"
+
+- code: decoration_overuse
+  category: expression
+  description_ko: 실질 정보 없는 수식어 장식을 덧칠함
+  severity: low
+  default_action: rewrite
+  regexes:
+    - "(아름다운|화려한|감동적인) (글|문장|여정|경험|마무리)"
+  examples:
+    - "감동적인 마무리"
+  exemptions: []
+
+- code: chatbot_greeting_closing
+  category: expression
+  description_ko: 챗봇 특유의 인사·맺음말을 글에 붙임
+  severity: high
+  default_action: delete
+  regexes:
+    - "안녕하세요!? ?반갑습니다"
+    - "도움이 되었기를 바랍니다"
+    - "궁금한 점이 있(다면|으시면) ?(언제든지? ?)?(알려주|말씀해 주)"
+    - "^감사합니다\\.?$"
+  examples:
+    - "도움이 되었기를 바랍니다!"
+  exemptions:
+    - "메일처럼 인사말이 장르 관례인 경우"
+
+- code: mismatched_formality
+  category: expression
+  description_ko: 같은 글에서 문체(존댓말·반말)가 섞임
+  severity: medium
+  default_action: ask
+  regexes:
+    - "[가-힣]+요\\. .{0,80}[가-힣]+다\\."
+    - "[가-힣]+다\\. .{0,80}[가-힣]+요\\."
+  examples:
+    - "좋습니다. 역시 좋다."
+  exemptions:
+    - "인용문 안에서 화자별 문체가 다른 경우"
+
+##############################################################################
+
+# SOURCE: skills/owndraft/references/output_contract.md
+
+# 사실 보존 절대 규칙
+
+OwnDraft가 편집 과정에서 지키는 최소 계약이다. 이 규칙은 원문의 어떤 표현보다 우선한다.
+
+1. 숫자·단위·날짜·시간은 값과 단위를 그대로 유지한다.
+   - `40분`을 `약 1시간`, `5분`을 `몇 분`, 특정 날짜를 상대 날짜로 바꾸지 않는다.
+2. 사람·회사·기관·제품 이름은 한 글자도 바꾸지 않는다.
+3. URL과 이메일 주소는 형태와 대상을 유지한다.
+4. 직접 인용은 따옴표 안의 내용을 그대로 보존하거나 삭제만 한다. 의역해 인용하지 않는다.
+5. 부정(`~않다`, `아니다`), 조건(`경우`, `때만`, `제외`, `단`), 예외를 긍정으로 뒤집지 않는다.
+6. 사용자가 잠금 표현으로 지정한 문자열은 위치와 형태를 유지한다.
+7. 새 통계, 새 출처, 새 경험, 새 인용, 새 사실을 만들지 않는다.
+8. 위 규칙 위반이 확인되면 결과를 통과시키지 않고 문제 구간을 표시하거나 원문을 유지한다.
+
+# 출력 계약
+
+내부 처리는 아래 세 가지 상태 중 하나로 끝난다.
+
+```text
+needs_context : 정보 부족 → 질문까지만 출력
+completed     : 사실 보존 검증 통과 → 수정본 출력
+blocked       : 검증 실패(수정 2회차) → 원문 유지 + 문제 구간 표시
+```
+
+## needs_context 예시
+
+```text
+status: needs_context
+questions:
+  - id: q_metric
+    question: "회의록 정리에 실제로 걸리던 시간과 줄어든 시간이 얼마인가요?"
+    expected_answer_type: number
+```
+
+## completed 예시
+
+```text
+status: completed
+rewritten_text: "..."
+changes:
+  - span_id: s_0001
+    change_type: delete
+    reason: "시대 배경 서론 삭제"
+preservation:
+    passed: true
+    locked_total: 4
+    preserved_locked: 4
+    new_claim_count: 0
+```
+
+## blocked 예시
+
+```text
+status: blocked
+issues:
+  - code: locked_value_missing
+    detail: "40분이 수정본에서 사라졌습니다"
+recommendation: "원문을 유지하고 사용자에게 확인을 요청하세요"
+```
+
+# 진단 신호 체계
+
+한국어 AI 글쓰기 패턴 카탈로그(`pattern_catalog_ko.yaml`)의 40개 코드를 사용한다.
+regexes가 있는 규칙은 결정론적으로 탐지하고, regexes가 없는 규칙은 문맥 판단 후에만 보고한다.
+문맥상 유지가 정당한 경우 exemptions을 근거로 진단에서 제외할 수 있다.
+
+##############################################################################
+
+# SOURCE: skills/owndraft/references/safety_policy.md
+
+# 사실 보존 절대 규칙
+
+- 원문이나 사용자 답변에 없는 사실·통계·출처·경험·인용을 추가하지 않는다.
+- 숫자와 단위, 날짜, 이름, 기관, 제품, 링크, 직접 인용, 부정, 조건, 예외를 바꾸지 않는다.
+- 새 통계, 새 출처, 새 경험, 새 사실을 생성하지 않는다.
+
+# 범위 밖 요청 전환 정책
+
+아래 요청은 기능 범위 밖이다. 거부 사유를 설명하고 합법적인 편집으로 전환한다.
+OwnDraft는 AI 탐지 점수 낮추기, 워터마크 제거, 특정 탐지기 통과를 보장하지 않는다.
+
+| 요청 예시 | 전환 방식 |
+|---|---|
+| "AI 탐지 0%로 만들어 줘" | 탐지 점수는 목표가 될 수 없음을 알리고, 상투 패턴 완화와 사실 보존 편집으로 전환 |
+| "워터마크 제거해 줘" | 워터마크 제거나 제거 완료 판정을 하지 않음을 알리고, 문서 위생 검사(공백·특수문자 정리 등)만 제안 |
+| "Turnitin/GPTZero 통과 보장해 줘" | 특정 탐지기 통과를 보장하지 않음을 알리고 원저작성 개선 관점의 편집으로 전환 |
+| "탐지 점수가 낮아질 때까지 반복해서 다시 써 줘" | 반복 패러프레이징을 하지 않음을 알리고 1회성 사실 보존 편집만 제공 |
+
+전환 시에도 본 스킬의 사실 보존 규칙은 그대로 적용한다.
+
+# 살아 있는 사람의 문체 정책
+
+- 살아 있는 작가나 특정 개인의 고유 문체를 그대로 복제하지 않는다.
+- 사용자가 자신의 문체 샘플을 제공한 경우에만 해당 사용자의 프로필을 만든다.
+- 문체 샘플과 생성 결과를 사용자에게 알리지 않고 학습 데이터로 사용하지 않는다.
+- 샘플이 80자 미만이면 문체 모드를 강행하지 않고 최소 수정 모드로 전환한다.
+- 샘플의 단어를 억지로 반복하는 과잉 모방을 하지 않는다.
+
+# 로그와 프라이버시
+
+- 민감한 원문, 수정문, 문체 샘플은 로그에 남기지 않는다.
+- 로그에는 trace ID, 글자 수, 단계, 지연 시간, 결과 코드만 기록한다.
+
+CONTENT_SHA256_EOF: bb6e219b219bf5cd8c7b4267966298fe3ce85a3110287abe980c4d89a77c52cf

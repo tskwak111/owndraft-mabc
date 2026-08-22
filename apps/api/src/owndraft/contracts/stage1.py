@@ -193,3 +193,43 @@ class Stage1Result(BaseModel):
     changes: list[ChangeReason] = Field(default_factory=list)
     preservation: PreservationReport | None = None
     trace_id: str
+
+
+class ClaimBundle(BaseModel):
+    """Response contract for the extract_claims operation."""
+
+    claims: list[Claim] = Field(default_factory=list)
+
+
+class PatternBundle(BaseModel):
+    """Response contract for the scan_patterns operation."""
+
+    findings: list[PatternFinding] = Field(default_factory=list)
+
+
+class QuestionBundle(BaseModel):
+    """Response contract for the find_context_gaps operation."""
+
+    questions: list[ContextQuestion] = Field(default_factory=list)
+
+
+class PlanOperation(BaseModel):
+    span_id: str | None = None
+    action: Literal[
+        "keep", "delete", "condense", "rewrite", "insert_user_answer", "reorder"
+    ]
+    note_ko: str = ""
+
+
+class RewritePlan(BaseModel):
+    """Response contract for the plan_rewrite operation."""
+
+    goals: list[str] = Field(default_factory=list, max_length=10)
+    operations: list[PlanOperation] = Field(default_factory=list)
+
+
+class CandidateDraft(BaseModel):
+    """Response contract for write_candidate / repair_candidate operations."""
+
+    rewritten_text: str
+    change_reasons: list[ChangeReason] = Field(default_factory=list)
