@@ -1,6 +1,6 @@
-OWNDRAFT_SKILL_VERSION: bb6e219b219b
+OWNDRAFT_SKILL_VERSION: 7ca8ee2b4cbd
 GENERATED_FROM_REPOSITORY: true
-CONTENT_SHA256: bb6e219b219bf5cd8c7b4267966298fe3ce85a3110287abe980c4d89a77c52cf
+CONTENT_SHA256: 7ca8ee2b4cbd5c1b305f6905cc4b526ad01009483d7b961174d8c7c3015d5e55
 ##############################################################################
 
 # SOURCE: skills/owndraft/SKILL.md
@@ -389,7 +389,8 @@ description: AI 초안을 사용자의 실제 말투로 다듬되 숫자·날짜
   severity: low
   default_action: rewrite
   regexes:
-    - "큰 도움이 될? 것?입니"
+    - "큰 도움이 될 것입니다"
+    - "큰 도움이 됩니다"
     - "크게 기여할 것입니다"
   examples:
     - "업무에 큰 도움이 될 것입니다"
@@ -539,6 +540,7 @@ description: AI 초안을 사용자의 실제 말투로 다듬되 숫자·날짜
   default_action: delete
   regexes:
     - "안녕하세요!? ?반갑습니다"
+    - "^안녕하세요[!.]?$"
     - "도움이 되었기를 바랍니다"
     - "궁금한 점이 있(다면|으시면) ?(언제든지? ?)?(알려주|말씀해 주)"
     - "^감사합니다\\.?$"
@@ -667,4 +669,4 @@ OwnDraft는 AI 탐지 점수 낮추기, 워터마크 제거, 특정 탐지기 �
 - 민감한 원문, 수정문, 문체 샘플은 로그에 남기지 않는다.
 - 로그에는 trace ID, 글자 수, 단계, 지연 시간, 결과 코드만 기록한다.
 
-CONTENT_SHA256_EOF: bb6e219b219bf5cd8c7b4267966298fe3ce85a3110287abe980c4d89a77c52cf
+CONTENT_SHA256_EOF: 7ca8ee2b4cbd5c1b305f6905cc4b526ad01009483d7b961174d8c7c3015d5e55

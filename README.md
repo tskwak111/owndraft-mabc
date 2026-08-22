@@ -31,3 +31,68 @@
 - repair 최대 1회
 - AI 탐지 우회와 워터마크 제거 미보장
 - 승인되지 않은 모델 결과는 문체 학습에 사용하지 않음
+
+---
+
+# STAGE 1 구현 (완료)
+
+Python 3.12 + Pydantic v2 + Typer 기반 로컬 하네스가 `apps/api`에 있다.
+상세 진행 상황과 커밋 목록은 `docs/implementation-status.md`를 참고한다.
+
+## 로컬 설치
+
+```bash
+uv sync --project apps/api --all-groups   # 의존성 설치 (실제 API 키 불필요)
+```
+
+## 테스트와 정적 검사
+
+```bash
+uv run --project apps/api pytest                      # 단위·계약·통합·평가 전체
+uv run --project apps/api ruff check apps/api tests scripts
+uv run --project apps/api mypy apps/api/src
+```
+
+## 선택적 실모델 smoke test (Upstage)
+
+```bash
+export UPSTAGE_API_KEY=...            # 실제 키. 코드·fixture에 절대 넣지 않는다.
+uv run --project apps/api pytest tests/integration/test_upstage_smoke.py -v
+```
+
+키가 없으면 이 테스트는 skip된다. CI와 기본 테스트는 Fake Gateway만으로 완전히 실행된다.
+모델명은 환경변수 `UPSTAGE_CHAT_MODEL`(기본 예시 `solar-pro4`)으로 주입한다(`.env.example` 참고).
+
+## 20개 평가셋 실행
+
+```bash
+uv run --project apps/api python -m owndraft.cli evaluate \
+  --cases packages/evaluation/cases \
+  --output artifacts/stage1/evaluation-final.json \
+  --markdown artifacts/stage1/evaluation-final.md
+# 모든 품질 게이트 통과 시에만 exit code 0
+```
+
+## 타임리 스킬 내보내기와 검증
+
+```bash
+uv run --project apps/api python scripts/export_timely_skill.py
+uv run --project apps/api python scripts/verify_timely_export.py artifacts/stage1/owndraft-timely-skill.txt
+```
+
+내보내기는 결정론적이며, 소스(SKILL.md·카탈로그·참조 문서) 변경 시 해시가 바뀐다.
+
+## 타임리 배포·제출 (수동)
+
+`docs/stage1/timely-deployment-checklist.md`와 `artifacts/stage1/timely-deployment-record.md` 참고.
+배포와 제출은 자동화하지 않으며 수동 실행 후 기록을 남긴다.
+
+## 안전 경계
+
+OwnDraft는 AI 탐지 우회 도구나 워터마크 제거기가 아니다.
+
+- Claude/Gemini 워터마크 제거나 제거 완료 판정을 하지 않는다.
+- Turnitin·GPTZero 등 특정 탐지기 통과를 보장하거나 목표로 하지 않는다.
+- "탐지 확률 0%" 주장, 점수 낮출 때까지 반복 재작성을 하지 않는다.
+- 사용자 몰래 문체 샘플·생성 결과를 학습 데이터로 사용하지 않는다.
+- 새 통계·새 출처·새 경험·새 인용을 임의 생성하지 않는다. 잠긴 앵커는 결정론적으로 검증한다.

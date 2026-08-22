@@ -1,0 +1,341 @@
+{
+  "summary": {
+    "total_cases": 20,
+    "average_pattern_reduction": 1.0,
+    "average_semantic_fidelity": 5.0,
+    "voice_mode_cases": 4,
+    "voice_mode_average_constraint_match": 1.0,
+    "completed_cases": 20,
+    "severe_locked_fact_errors": 0,
+    "unsupported_new_facts": 0,
+    "failed_cases": 0
+  },
+  "metadata": {
+    "model": "fake-gateway(deterministic)",
+    "skill_version": "7ca8ee2b4cbd",
+    "cases_dir": "packages/evaluation/cases",
+    "generated_at": "2026-08-22T20:00:02.908631+00:00"
+  },
+  "cases": [
+    {
+      "case_id": "blog_01_meeting_minutes",
+      "category": "blog",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": 1.0,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "blog_02_ai_study_plan",
+      "category": "blog",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "blog_03_gym_routine",
+      "category": "blog",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": 1.0,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "blog_04_mac_switch",
+      "category": "blog",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "blog_05_project_retrospective",
+      "category": "blog",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "email_01_schedule_change",
+      "category": "email",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "email_02_budget_request",
+      "category": "email",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "email_03_bug_report",
+      "category": "email",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "email_04_meeting_followup",
+      "category": "email",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "email_05_polite_decline",
+      "category": "email",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": 1.0,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "report_01_experiment_result",
+      "category": "report",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "report_02_competition_proposal",
+      "category": "report",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "report_03_security_summary",
+      "category": "report",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "report_04_model_comparison",
+      "category": "report",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "report_05_team_weekly_update",
+      "category": "report",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": 1.0,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "social_01_product_launch",
+      "category": "social",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "social_02_event_recap",
+      "category": "social",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "social_03_learning_thread",
+      "category": "social",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "social_04_project_demo",
+      "category": "social",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    },
+    {
+      "case_id": "social_05_portfolio_intro",
+      "category": "social",
+      "status": "completed",
+      "passed": true,
+      "repair_attempts": 0,
+      "metrics": {
+        "locked_fact_preservation": 1.0,
+        "new_claim_rate": 0.0,
+        "semantic_fidelity": 5.0,
+        "pattern_reduction": 1.0,
+        "voice_constraint_match": null,
+        "severe_locked_fact_errors": 0
+      },
+      "issues": []
+    }
+  ]
+}
