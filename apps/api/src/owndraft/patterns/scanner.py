@@ -1,8 +1,9 @@
 """Deterministic regex-based scanning of Korean AI writing patterns."""
 
 import re
+from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from owndraft.contracts.stage1 import PatternFinding
 from owndraft.patterns.catalog import PatternRule
@@ -11,8 +12,8 @@ from owndraft.text.segmentation import TextSpan
 
 class CompiledPattern(BaseModel):
     code: str
-    severity: str = Field(pattern="^(low|medium|high)$")
-    action: str = Field(pattern="^(keep|rewrite|delete|ask)$")
+    severity: Literal["low", "medium", "high"]
+    action: Literal["keep", "rewrite", "delete", "ask"]
     reason: str
     regexes: list[re.Pattern[str]]
 
@@ -57,9 +58,9 @@ def scan_deterministic_patterns(
                     PatternFinding(
                         span_id=span.id,
                         pattern_code=rule.code,
-                        severity=rule.severity,  # type: ignore[arg-type]
+                        severity=rule.severity,
                         reason=rule.reason,
-                        action=rule.action,  # type: ignore[arg-type]
+                        action=rule.action,
                     )
                 )
     return findings

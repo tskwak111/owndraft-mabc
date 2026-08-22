@@ -67,6 +67,10 @@ async def test_workflow_records_trace_events_without_sensitive_text(workflow):
 
     assert "deterministic_claims" in states
     assert "acceptance_gate" in states
+    claims_event = next(e for e in events if e.state.value == "deterministic_claims")
+    assert claims_event.input_chars == len(VALID_REQUEST.text)
+    candidate_event = next(e for e in events if e.state.value == "candidate")
+    assert candidate_event.output_chars > 0
     serialized = repr(events)
     assert "Solar" not in serialized
     assert "https://example.com" not in serialized

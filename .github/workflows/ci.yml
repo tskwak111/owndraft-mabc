@@ -6,12 +6,27 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.12"
       - run: uv sync --project apps/api --all-groups
-      - run: uv run --project apps/api pytest
-      - run: uv run --project apps/api ruff check apps/api tests scripts
-      - run: uv run --project apps/api mypy apps/api/src
+      - name: Unit, contract, integration tests
+        run: uv run --project apps/api pytest
+      - name: Lint
+        run: uv run --project apps/api ruff check apps/api tests scripts
+      - name: Type check
+        run: uv run --project apps/api mypy apps/api/src
+      - name: Evaluation quality gates (20 cases, fake gateway)
+        run: |
+          uv run --project apps/api python -m owndraft.cli evaluate \
+            --cases packages/evaluation/cases \
+            --output artifacts/stage1/evaluation-ci.json \
+            --markdown artifacts/stage1/evaluation-ci.md
+      - name: Timely skill export determinism
+        run: |
+          uv run --project apps/api python scripts/export_timely_skill.py
+          uv run --project apps/api python scripts/verify_timely_export.py \
+            artifacts/stage1/owndraft-timely-skill.txt

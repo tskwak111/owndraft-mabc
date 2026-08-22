@@ -8,14 +8,6 @@ from owndraft.text.normalization import normalize_for_comparison
 _NUMBER_CORE_RE = re.compile(r"\d[\d,.]*")
 _UNIT_RE = re.compile(r"[가-힣A-Za-z%°℃]+")
 
-_HIGH_SEVERITY_CODES = {
-    "locked_value_missing",
-    "unit_changed",
-    "quote_changed",
-    "source_changed",
-    "polarity_changed",
-}
-
 
 def _number_parts(value: str) -> tuple[str | None, str]:
     core = _NUMBER_CORE_RE.search(value)
@@ -24,17 +16,28 @@ def _number_parts(value: str) -> tuple[str | None, str]:
     return (numeric.strip(",.") if numeric else None, unit.strip())
 
 
+def _numeric_present(numeric: str, haystack: str) -> bool:
+    """Match a number with or without thousands separators on both sides."""
+
+    if numeric in haystack:
+        return True
+    compact_numeric = numeric.replace(",", "")
+    compact_haystack = haystack.replace(",", "")
+    return compact_numeric in compact_haystack
+
+
 def _check_number(claim: Claim, normalized_rewritten: str) -> PreservationIssue | None:
     if claim.normalized_value in normalized_rewritten:
         return None
     numeric, unit = _number_parts(claim.normalized_value)
-    if numeric is None or numeric not in normalized_rewritten:
+    if numeric is None or not _numeric_present(numeric, normalized_rewritten):
         return PreservationIssue(
             code="locked_value_missing", severity="high", claim_id=claim.id
         )
     rewritten_unit = ""
     for match in _NUMBER_CORE_RE.finditer(normalized_rewritten):
-        if match.group().strip(",.") == numeric:
+        core_value = match.group().strip(",.")
+        if core_value == numeric or core_value.replace(",", "") == numeric.replace(",", ""):
             after = normalized_rewritten[match.end() :]
             unit_match = _UNIT_RE.match(after)
             rewritten_unit = unit_match.group() if unit_match else ""

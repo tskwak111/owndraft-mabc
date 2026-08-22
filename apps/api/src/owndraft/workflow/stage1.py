@@ -80,7 +80,9 @@ class Stage1Workflow:
         # deterministic_claims
         started = time.perf_counter()
         deterministic_claims = extract_deterministic_claims(request)
-        events.append(trace_event(WorkflowState.DETERMINISTIC_CLAIMS, started))
+        events.append(
+            trace_event(WorkflowState.DETERMINISTIC_CLAIMS, started, input_chars=len(request.text))
+        )
 
         # model_claims
         try:
@@ -93,7 +95,9 @@ class Stage1Workflow:
         except Exception as error:
             events.append(trace_event(WorkflowState.MODEL_CLAIMS, time.perf_counter(), error))
             raise
-        events.append(trace_event(WorkflowState.MODEL_CLAIMS, time.perf_counter()))
+        events.append(
+            trace_event(WorkflowState.MODEL_CLAIMS, time.perf_counter(), output_chars=sum(len(c.source_text) for c in claims))
+        )
 
         # deterministic_patterns + model_patterns (parallel)
         started = time.perf_counter()
@@ -103,12 +107,17 @@ class Stage1Workflow:
             asyncio.sleep(0, result=scan_deterministic_patterns(spans, catalog)),
             self._call("scan_patterns", {"spans": [span.model_dump() for span in spans]}, PatternBundle),
         )
+        # model findings referencing hallucinated spans are dropped
+        known_span_ids = {span.id for span in spans}
         combined: dict[tuple[str, str], PatternFinding] = {
             (finding.span_id, finding.pattern_code): finding
             for finding in [*det_findings, *pattern_bundle.findings]
+            if finding.span_id in known_span_ids
         }
         diagnosis = list(combined.values())
-        events.append(trace_event(WorkflowState.PATTERNS, started))
+        events.append(
+            trace_event(WorkflowState.PATTERNS, started, input_chars=len(request.text), output_chars=len(diagnosis))
+        )
 
         # voice_profile
         started = time.perf_counter()
@@ -140,7 +149,9 @@ class Stage1Workflow:
             QuestionBundle,
         )
         questions = select_context_questions(question_bundle.questions, request.text)
-        events.append(trace_event(WorkflowState.CONTEXT_GAP, started))
+        events.append(
+            trace_event(WorkflowState.CONTEXT_GAP, started, input_chars=len(request.text), output_chars=len(questions))
+        )
 
         if questions and not context_answers:
             return Stage1Result(
@@ -190,7 +201,9 @@ class Stage1Workflow:
 
         started = time.perf_counter()
         candidate = await _produce("write_candidate")
-        events.append(trace_event(WorkflowState.CANDIDATE, started))
+        events.append(
+            trace_event(WorkflowState.CANDIDATE, started, input_chars=len(request.text), output_chars=len(candidate.rewritten_text))
+        )
         repair_attempts = 0
         preservation = verify_preservation(claims, candidate.rewritten_text)
 
@@ -219,7 +232,8 @@ class Stage1Workflow:
                     diagnosis=diagnosis,
                     questions=[],
                     rewritten_text=None,
-                    changes=candidate.change_reasons,
+                    # the candidate was discarded; do not surface its reasons
+                    changes=[],
                     preservation=preservation,
                     trace_id=trace_id,
                 )
@@ -229,7 +243,9 @@ class Stage1Workflow:
             candidate = await _produce("repair_candidate", repair_instructions)
             repair_attempts += 1
             preservation = verify_preservation(claims, candidate.rewritten_text)
-            events.append(trace_event(WorkflowState.REPAIR, time.perf_counter()))
+            events.append(
+                trace_event(WorkflowState.REPAIR, time.perf_counter(), output_chars=len(candidate.rewritten_text))
+            )
 
         preservation = preservation.model_copy(update={"repair_attempts": repair_attempts})
         return Stage1Result(

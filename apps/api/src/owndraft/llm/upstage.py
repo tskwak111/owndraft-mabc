@@ -19,7 +19,6 @@ from owndraft.llm.parser import parse_model_json
 T = TypeVar("T", bound=BaseModel)
 
 _TRANSIENT_RETRIES = 1
-_SCHEMA_CORRECTION_LIMIT = 1
 
 
 def _json_schema_hint(response_model: type[BaseModel]) -> str:
@@ -40,9 +39,12 @@ class UpstageModelGateway:
     """
 
     def __init__(self, settings: Settings) -> None:
+        # Retry policy is owned by this gateway (exactly one transient retry),
+        # so the SDK's built-in retries are disabled explicitly.
         self._client = AsyncOpenAI(
             api_key=settings.upstage_api_key.get_secret_value(),
             base_url=settings.upstage_base_url,
+            max_retries=0,
         )
         self._model = settings.upstage_chat_model
         self.parse_retries_used = 0
@@ -90,6 +92,8 @@ class UpstageModelGateway:
         user_prompt: str,
         response_model: type[T],
     ) -> T:
+        """One schema-correction request per call, never per-instance budget."""
+
         messages: list[ChatCompletionMessageParam] = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
@@ -100,9 +104,6 @@ class UpstageModelGateway:
         except ModelOutputError as error:
             if error.code != "model_schema_mismatch":
                 raise
-            if self.parse_retries_used >= _SCHEMA_CORRECTION_LIMIT:
-                raise
-            self.parse_retries_used += 1
 
             correction_messages: list[ChatCompletionMessageParam] = [
                 *messages,
@@ -116,5 +117,6 @@ class UpstageModelGateway:
                     ),
                 },
             ]
+            self.parse_retries_used += 1
             raw_retry = await self._request(messages=correction_messages)
             return parse_model_json(raw_retry, response_model)

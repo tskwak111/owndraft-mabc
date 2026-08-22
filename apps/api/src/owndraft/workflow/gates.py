@@ -96,13 +96,21 @@ def decide_acceptance(report: PreservationReport, critics: CriticBundle) -> Acce
     )
 
 
-def trace_event(state: WorkflowState, started: float, error: Exception | None = None) -> TraceEvent:
+def trace_event(
+    state: WorkflowState,
+    started: float,
+    error: Exception | None = None,
+    input_chars: int = 0,
+    output_chars: int = 0,
+) -> TraceEvent:
+    """Build a trace event with safe metadata only (sizes, latency, codes)."""
+
     latency_ms = int((time.perf_counter() - started) * 1000)
     return TraceEvent(
         state=state,
         latency_ms=latency_ms,
-        input_chars=0,
-        output_chars=0,
+        input_chars=input_chars,
+        output_chars=output_chars,
         success=error is None,
         error_code=getattr(error, "code", type(error).__name__ if error else None),
     )

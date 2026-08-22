@@ -53,15 +53,19 @@ STAGE 2는 사용자가 명시적으로 `STAGE 2 시작`을 지시할 때까지 
 | 9. Twenty-Case Evaluation Dataset and Regression Report | 완료 | `a0ce020` |
 | 10. Timely Deployment Docs, Demos, Submission Freeze | 완료 | (아래 최종 커밋) |
 
-## 최종 검증 결과 (2026-08-23 새로 실행)
+## 최종 검증 결과 (하드닝 후 재실행, 2026-08-23)
 
-- pytest: **89 passed, 1 skipped** (skip = UPSTAGE_API_KEY 미제공 smoke test)
+최종 전수 감사에서 결함 5건(D1–D5)을 발견·수정하고 회귀 테스트 13건을 추가했다.
+상세 내역은 `artifacts/stage1/final-verification.md` §1 참고.
+
+- pytest: **102 passed, 1 skipped** (skip = UPSTAGE_API_KEY 미제공 smoke test)
 - ruff check apps/api tests scripts: **All checks passed**
 - mypy apps/api/src: **no issues in 34 source files**
 - CLI evaluate: exit 0 — 20/20 완료, 심각 오류 0, 새 사실 0, 패턴 감소 100%, 충실도 5.00, voice 100%
-- export + verify_timely_export: OK — 스킬 버전 `7ca8ee2b4cbd`
+- export + verify_timely_export: OK — 스킬 버전 `7ca8ee2b4cbd` (불변 확인)
   - content sha256: `7ca8ee2b4cbd5c1b305f6905cc4b526ad01009483d7b961174d8c7c3015d5e55`
 - `git diff --check`: 통과
+- CI: 평가 게이트 + export 검증 단계까지 포함하도록 확장 (키 불필요)
 
 증거 원문: `artifacts/stage1/final-verification.md`
 
@@ -69,6 +73,7 @@ STAGE 2는 사용자가 명시적으로 `STAGE 2 시작`을 지시할 때까지 
 
 - 평가 리포트의 모델 필드는 `fake-gateway(deterministic)`이다. 실모델(solar-pro4) 회귀는 API 키가 있을 때 별도 실행해야 하며 현재 보고서는 이를 대체하지 않는다.
 - 타임리 플랫폼 배포·스모크 5케이스·제출은 수동 미실행 상태 (`timely-deployment-record.md` 참고).
+- 부정·조건 앵커는 정규화 문자열 포함 기반의 보수적 검사다. 원문의 "완료되지 않았다"가 다른 문장의 같은 표현으로 우회 시 결정론 검사 한계가 있으며, 이는 repair 게이트와 Critic·인간 검토로 보완한다(설계서 §13.12 구조).
 - mismatched_formality/dash_colon_overuse 등 파괴적 제거 위험이 있는 규칙 regex는 픽스처에서 사용하지 않았고, 스캐너 자체는 유지된다.
 
 ## 남은 수동 작업

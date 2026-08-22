@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from typing import Literal
 
 import yaml
 from pydantic import BaseModel, Field
@@ -14,10 +15,10 @@ EXPECTED_RULE_COUNT = 40
 
 class PatternRule(BaseModel):
     code: str
-    category: str
+    category: Literal["content", "structure", "expression"]
     description_ko: str
-    severity: str = Field(pattern="^(low|medium|high)$")
-    default_action: str = Field(pattern="^(keep|rewrite|delete|ask)$")
+    severity: Literal["low", "medium", "high"]
+    default_action: Literal["keep", "rewrite", "delete", "ask"]
     regexes: list[str] = Field(default_factory=list)
     examples: list[str] = Field(default_factory=list)
     exemptions: list[str] = Field(default_factory=list)

@@ -16,12 +16,13 @@ from owndraft.contracts.stage1 import (
     ChangeReason,
     Claim,
     EditMode,
-    PatternFinding,
     Stage1Request,
 )
 from owndraft.evaluation.fixtures import EvaluationCase, load_cases
 from owndraft.evaluation.metrics import EvaluationResult, aggregate_results
 from owndraft.llm.gateway import FakeModelGateway
+from owndraft.patterns.catalog import load_pattern_catalog
+from owndraft.patterns.scanner import scan_deterministic_patterns
 from owndraft.text.normalization import normalize_for_comparison
 from owndraft.text.segmentation import segment_text
 
@@ -39,15 +40,12 @@ _PASSED_NATURALNESS = {"critic": "naturalness", "score": 5.0, "passed": True}
 def build_offline_candidate(
     request: Stage1Request,
     answers: dict[str, str],
-    findings: list[PatternFinding],
 ) -> str:
     """Deterministic candidate: strip matched pattern phrases, keep the rest.
 
     Locked anchors outside the matched phrases survive untouched because only
     exact rule regexes are substituted.
     """
-
-    from owndraft.patterns.catalog import load_pattern_catalog
 
     catalog = load_pattern_catalog()
     kept_parts: list[str] = []
@@ -181,13 +179,10 @@ class OfflineEvaluationRunner:
         request = case.to_stage1_request()
 
         spans = segment_text(request.text)
-        from owndraft.patterns.catalog import load_pattern_catalog
-        from owndraft.patterns.scanner import scan_deterministic_patterns
-
         catalog = load_pattern_catalog()
         before_findings = scan_deterministic_patterns(spans, catalog)
 
-        candidate_text = build_offline_candidate(request, case.context_answers, before_findings)
+        candidate_text = build_offline_candidate(request, case.context_answers)
         candidate_changes = [
             ChangeReason(span_id=f.span_id, change_type="rewrite", reason=f.reason).model_dump()
             for f in before_findings
