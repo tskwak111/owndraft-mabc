@@ -44,8 +44,8 @@ LIVE_MODEL_TEST=OPTIONAL
 | 4. Claim Locker and Preservation Verifier | 대기 | - |
 | 5. Voice Profile and Context Question Validation | 완료 | `61aa51c` |
 | 6. Model Gateway, Upstage Adapter, and Structured Output Parser | 대기 | - |
-| 7. Skill Prompt Pack and Deterministic Timely Export | 대기 | - |
-| 8. Stage 1 Workflow, Parallel Critics, and One-Repair Gate | 대기 | - |
+| 7. Skill Prompt Pack and Deterministic Timely Export | 완료 | `a39babe` |
+| 8. Stage 1 Workflow, Parallel Critics, and One-Repair Gate | 진행 중 | - |
 | 9. Twenty-Case Evaluation Dataset and Regression Report | 대기 | - |
 | 10. Timely Deployment, Demo Rehearsal, and Submission Freeze | 대기 | - |
 
