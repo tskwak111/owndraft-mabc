@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# uv
+uv.lock
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Build artifacts (keep frozen submission artifacts tracked selectively)
+*.pyc
+dist/
+build/
+
+# Generated evaluation outputs are committed intentionally; ignore scratch files
+artifacts/stage1/*.tmp.json
